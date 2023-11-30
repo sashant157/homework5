@@ -1,0 +1,49 @@
+Script started on Thu Nov 30 08:11:13 2023
+[root@zfs ~]# get -O otus_task2.file --no-check-certificate "https://drive.google.com/u/0/uc?id=1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG&export=download"
+bash: get: command not found
+[root@zfs ~]# wget -O otus_task2.file --no-check-certificate "https://drive.google.com/u/0/uc?id=1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG&export=download"
+--2023-11-30 08:12:49--  https://drive.google.com/u/0/uc?id=1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG&export=download
+Resolving drive.google.com (drive.google.com)... 142.250.9.113, 142.250.9.138, 142.250.9.139, ...
+Connecting to drive.google.com (drive.google.com)|142.250.9.113|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://drive.google.com/uc?id=1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG&export=download [following]
+--2023-11-30 08:12:50--  https://drive.google.com/uc?id=1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG&export=download
+Reusing existing connection to drive.google.com:443.
+HTTP request sent, awaiting response... 303 See Other
+Location: https://doc-00-bo-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/0asu4e31j6bt1dt1a5kn4g3ntjp89jt5/1701331950000/16189157874053420687/*/1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG?e=download&uuid=c929fb7b-79c2-40e5-93b7-a55de79e7025 [following]
+Warning: wildcards not supported in HTTP.
+--2023-11-30 08:12:56--  https://doc-00-bo-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/0asu4e31j6bt1dt1a5kn4g3ntjp89jt5/1701331950000/16189157874053420687/*/1gH8gCL9y7Nd5Ti3IRmplZPF1XjzxeRAG?e=download&uuid=c929fb7b-79c2-40e5-93b7-a55de79e7025
+Resolving doc-00-bo-docs.googleusercontent.com (doc-00-bo-docs.googleusercontent.com)... 74.125.138.132, 2607:f8b0:4002:c03::84
+Connecting to doc-00-bo-docs.googleusercontent.com (doc-00-bo-docs.googleusercontent.com)|74.125.138.132|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 5432736 (5.2M) [application/octet-stream]
+Saving to: 'otus_task2.file'
+
+100%[==========================================================================================>] 5,432,736   3.90MB/s   in 1.3s   
+
+2023-11-30 08:12:59 (3.90 MB/s) - 'otus_task2.file' saved [5432736/5432736]
+
+[root@zfs ~]# zfs receive otus/test@today < otus_task2.file 
+[root@zfs ~]# df -hT
+Filesystem     Type      Size  Used Avail Use% Mounted on
+devtmpfs       devtmpfs  489M     0  489M   0% /dev
+tmpfs          tmpfs     496M     0  496M   0% /dev/shm
+tmpfs          tmpfs     496M  6.8M  489M   2% /run
+tmpfs          tmpfs     496M     0  496M   0% /sys/fs/cgroup
+/dev/sda1      xfs        40G  8.2G   32G  21% /
+tmpfs          tmpfs     100M     0  100M   0% /run/user/1000
+otus1          zfs       352M   22M  331M   7% /otus1
+otus2          zfs       352M   18M  335M   6% /otus2
+otus3          zfs       352M   11M  342M   4% /otus3
+otus4          zfs       352M   40M  313M  12% /otus4
+otus           zfs       347M  128K  347M   1% /otus
+otus/hometask2 zfs       349M  2.0M  347M   1% /otus/hometask2
+otus/test      zfs       350M  2.9M  347M   1% /otus/test
+[root@zfs ~]# find /otus/test/ -name "secret_message"
+/otus/test/task1/file_mess/secret_message
+[root@zfs ~]# cat /otus/test/task1/file_mess/secret_message 
+https://github.com/xxxxxxxxx/awesome
+[root@zfs ~]# exit
+exit
+
+Script done on Thu Nov 30 08:22:57 2023

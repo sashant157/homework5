@@ -1,0 +1,348 @@
+Script started on Thu Nov 30 07:39:38 2023
+[root@zfs ~]# ls -l
+total 7124
+-rw-------. 1 root root    5570 Apr 30  2020 anaconda-ks.cfg
+-rw-r--r--. 1 root root 7275140 May 15  2020 archive.tar.gz
+-rw-------. 1 root root    5300 Apr 30  2020 original-ks.cfg
+[root@zfs ~]# tar -xzvf archive.tar.gz 
+zpoolexport/
+zpoolexport/filea
+zpoolexport/fileb
+[root@zfs ~]# zpool import -d zpoolexport/
+   pool: otus
+     id: 6554193320433390805
+  state: ONLINE
+ action: The pool can be imported using its name or numeric identifier.
+ config:
+
+    otus                         ONLINE
+      mirror-0                   ONLINE
+        /root/zpoolexport/filea  ONLINE
+        /root/zpoolexport/fileb  ONLINE
+[root@zfs ~]# zpool status
+  pool: otus1
+ state: ONLINE
+  scan: none requested
+config:
+
+    NAME        STATE     READ WRITE CKSUM
+    otus1       ONLINE       0     0     0
+      mirror-0  ONLINE       0     0     0
+        sdb     ONLINE       0     0     0
+        sdc     ONLINE       0     0     0
+
+errors: No known data errors
+
+  pool: otus2
+ state: ONLINE
+  scan: none requested
+config:
+
+    NAME        STATE     READ WRITE CKSUM
+    otus2       ONLINE       0     0     0
+      mirror-0  ONLINE       0     0     0
+        sdd     ONLINE       0     0     0
+        sde     ONLINE       0     0     0
+
+errors: No known data errors
+
+  pool: otus3
+ state: ONLINE
+  scan: none requested
+config:
+
+    NAME        STATE     READ WRITE CKSUM
+    otus3       ONLINE       0     0     0
+      mirror-0  ONLINE       0     0     0
+        sdf     ONLINE       0     0     0
+        sdg     ONLINE       0     0     0
+
+errors: No known data errors
+
+  pool: otus4
+ state: ONLINE
+  scan: none requested
+config:
+
+    NAME        STATE     READ WRITE CKSUM
+    otus4       ONLINE       0     0     0
+      mirror-0  ONLINE       0     0     0
+        sdh     ONLINE       0     0     0
+        sdi     ONLINE       0     0     0
+
+errors: No known data errors
+[root@zfs ~]# zpool import -d zpoolexport/ otus
+[root@zfs ~]# zpool status | grep 'otus'
+  pool: otus
+    otus                         ONLINE       0     0     0
+  pool: otus1
+    otus1       ONLINE       0     0     0
+  pool: otus2
+    otus2       ONLINE       0     0     0
+  pool: otus3
+    otus3       ONLINE       0     0     0
+  pool: otus4
+    otus4       ONLINE       0     0     0
+[root@zfs ~]# zpool get all otus
+NAME  PROPERTY                       VALUE                          SOURCE
+otus  size                           480M                           -
+otus  capacity                       0%                             -
+otus  altroot                        -                              default
+otus  health                         ONLINE                         -
+otus  guid                           6554193320433390805            -
+otus  version                        -                              default
+otus  bootfs                         -                              default
+otus  delegation                     on                             default
+otus  autoreplace                    off                            default
+otus  cachefile                      -                              default
+otus  failmode                       wait                           default
+otus  listsnapshots                  off                            default
+otus  autoexpand                     off                            default
+otus  dedupditto                     0                              default
+otus  dedupratio                     1.00x                          -
+otus  free                           478M                           -
+otus  allocated                      2.09M                          -
+otus  readonly                       off                            -
+otus  ashift                         0                              default
+otus  comment                        -                              default
+otus  expandsize                     -                              -
+otus  freeing                        0                              -
+otus  fragmentation                  0%                             -
+otus  leaked                         0                              -
+otus  multihost                      off                            default
+otus  checkpoint                     -                              -
+otus  load_guid                      14172695634742283322           -
+otus  autotrim                       off                            default
+otus  feature@async_destroy          enabled                        local
+otus  feature@empty_bpobj            active                         local
+otus  feature@lz4_compress           active                         local
+otus  feature@multi_vdev_crash_dump  enabled                        local
+otus  feature@spacemap_histogram     active                         local
+otus  feature@enabled_txg            active                         local
+otus  feature@hole_birth             active                         local
+otus  feature@extensible_dataset     active                         local
+otus  feature@embedded_data          active                         local
+otus  feature@bookmarks              enabled                        local
+otus  feature@filesystem_limits      enabled                        local
+otus  feature@large_blocks           enabled                        local
+otus  feature@large_dnode            enabled                        local
+otus  feature@sha512                 enabled                        local
+otus  feature@skein                  enabled                        local
+otus  feature@edonr                  enabled                        local
+otus  feature@userobj_accounting     active                         local
+otus  feature@encryption             enabled                        local
+otus  feature@project_quota          active                         local
+otus  feature@device_removal         enabled                        local
+otus  feature@obsolete_counts        enabled                        local
+otus  feature@zpool_checkpoint       enabled                        local
+otus  feature@spacemap_v2            active                         local
+otus  feature@allocation_classes     enabled                        local
+otus  feature@resilver_defer         enabled                        local
+otus  feature@bookmark_v2            enabled                        local
+[root@zfs ~]# zfs get all otus
+NAME  PROPERTY              VALUE                  SOURCE
+otus  type                  filesystem             -
+otus  creation              Fri May 15  4:00 2020  -
+otus  used                  2.04M                  -
+otus  available             350M                   -
+otus  referenced            24K                    -
+otus  compressratio         1.00x                  -
+otus  mounted               yes                    -
+otus  quota                 none                   default
+otus  reservation           none                   default
+otus  recordsize            128K                   local
+otus  mountpoint            /otus                  default
+otus  sharenfs              off                    default
+otus  checksum              sha256                 local
+otus  compression           zle                    local
+otus  atime                 on                     default
+otus  devices               on                     default
+otus  exec                  on                     default
+otus  setuid                on                     default
+otus  readonly              off                    default
+otus  zoned                 off                    default
+otus  snapdir               hidden                 default
+otus  aclinherit            restricted             default
+otus  createtxg             1                      -
+otus  canmount              on                     default
+otus  xattr                 on                     default
+otus  copies                1                      default
+otus  version               5                      -
+otus  utf8only              off                    -
+otus  normalization         none                   -
+otus  casesensitivity       sensitive              -
+otus  vscan                 off                    default
+otus  nbmand                off                    default
+otus  sharesmb              off                    default
+otus  refquota              none                   default
+otus  refreservation        none                   default
+otus  guid                  14592242904030363272   -
+otus  primarycache          all                    default
+otus  secondarycache        all                    default
+otus  usedbysnapshots       0B                     -
+otus  usedbydataset         24K                    -
+otus  usedbychildren        2.01M                  -
+otus  usedbyrefreservation  0B                     -
+otus  logbias               latency                default
+otus  objsetid              54                     -
+otus  dedup                 off                    default
+otus  mlslabel              none                   default
+otus  sync                  standard               default
+otus  dnodesize             legacy                 default
+otus  refcompressratio      1.00x                  -
+otus  written               24K                    -
+otus  logicalused           1020K                  -
+otus  logicalreferenced     12K                    -
+otus  volmode               default                default
+otus  filesystem_limit      none                   default
+otus  snapshot_limit        none                   default
+otus  filesystem_count      none                   default
+otus  snapshot_count        none                   default
+otus  snapdev               hidden                 default
+otus  acltype               off                    default
+otus  context               none                   default
+otus  fscontext             none                   default
+otus  defcontext            none                   default
+otus  rootcontext           none                   default
+otus  relatime              off                    default
+otus  redundant_metadata    all                    default
+otus  overlay               off                    default
+otus  encryption            off                    default
+otus  keylocation           none                   default
+otus  keyformat             none                   default
+otus  pbkdf2iters           0                      default
+otus  special_small_blocks  0                      default
+[root@zfs ~]# zfs get avilable otus
+bad property list: invalid property 'avilable'
+usage:
+    get [-rHp] [-d max] [-o "all" | field[,...]]
+        [-t type[,...]] [-s source[,...]]
+        <"all" | property[,...]> [filesystem|volume|snapshot|bookmark] ...
+
+The following properties are supported:
+
+    PROPERTY       EDIT  INHERIT   VALUES
+
+    available        NO       NO   <size>
+    clones           NO       NO   <dataset>[,...]
+    compressratio    NO       NO   <1.00x or higher if compressed>
+    createtxg        NO       NO   <uint64>
+    creation         NO       NO   <date>
+    defer_destroy    NO       NO   yes | no
+    encryptionroot   NO       NO   <filesystem | volume>
+    filesystem_count  NO       NO   <count>
+    guid             NO       NO   <uint64>
+    keystatus        NO       NO   none | unavailable | available
+    logicalreferenced  NO       NO   <size>
+    logicalused      NO       NO   <size>
+    mounted          NO       NO   yes | no
+    objsetid         NO       NO   <uint64>
+    origin           NO       NO   <snapshot>
+    receive_resume_token  NO       NO   <string token>
+    refcompressratio  NO       NO   <1.00x or higher if compressed>
+    referenced       NO       NO   <size>
+    snapshot_count   NO       NO   <count>
+    type             NO       NO   filesystem | volume | snapshot | bookmark
+    used             NO       NO   <size>
+    usedbychildren   NO       NO   <size>
+    usedbydataset    NO       NO   <size>
+    usedbyrefreservation  NO       NO   <size>
+    usedbysnapshots  NO       NO   <size>
+    userrefs         NO       NO   <count>
+    written          NO       NO   <size>
+    aclinherit      YES      YES   discard | noallow | restricted | passthrough | passthrough-x
+    acltype         YES      YES   noacl | posixacl
+    atime           YES      YES   on | off
+    canmount        YES       NO   on | off | noauto
+    casesensitivity  NO      YES   sensitive | insensitive | mixed
+    checksum        YES      YES   on | off | fletcher2 | fletcher4 | sha256 | sha512 | skein | edonr
+    compression     YES      YES   on | off | lzjb | gzip | gzip-[1-9] | zle | lz4
+    context         YES       NO   <selinux context>
+    copies          YES      YES   1 | 2 | 3
+    dedup           YES      YES   on | off | verify | sha256[,verify], sha512[,verify], skein[,verify], edonr,verify
+    defcontext      YES       NO   <selinux defcontext>
+    devices         YES      YES   on | off
+    dnodesize       YES      YES   legacy | auto | 1k | 2k | 4k | 8k | 16k
+    encryption       NO      YES   on | off | aes-128-ccm | aes-192-ccm | aes-256-ccm | aes-128-gcm | aes-192-gcm | aes-256-gcm
+    exec            YES      YES   on | off
+    filesystem_limit YES       NO   <count> | none
+    fscontext       YES       NO   <selinux fscontext>
+    keyformat        NO       NO   none | raw | hex | passphrase
+    keylocation     YES       NO   prompt | <file URI>
+    logbias         YES      YES   latency | throughput
+    mlslabel        YES      YES   <sensitivity label>
+    mountpoint      YES      YES   <path> | legacy | none
+    nbmand          YES      YES   on | off
+    normalization    NO      YES   none | formC | formD | formKC | formKD
+    overlay         YES      YES   on | off
+    pbkdf2iters      NO       NO   <iters>
+    primarycache    YES      YES   all | none | metadata
+    quota           YES       NO   <size> | none
+    readonly        YES      YES   on | off
+    recordsize      YES      YES   512 to 1M, power of 2
+    redundant_metadata YES      YES   all | most
+    refquota        YES       NO   <size> | none
+    refreservation  YES       NO   <size> | none
+    relatime        YES      YES   on | off
+    reservation     YES       NO   <size> | none
+    rootcontext     YES       NO   <selinux rootcontext>
+    secondarycache  YES      YES   all | none | metadata
+    setuid          YES      YES   on | off
+    sharenfs        YES      YES   on | off | share(1M) options
+    sharesmb        YES      YES   on | off | sharemgr(1M) options
+    snapdev         YES      YES   hidden | visible
+    snapdir         YES      YES   hidden | visible
+    snapshot_limit  YES       NO   <count> | none
+    special_small_blocks YES      YES   zero or 512 to 1M, power of 2
+    sync            YES      YES   standard | always | disabled
+    utf8only         NO      YES   on | off
+    version         YES       NO   1 | 2 | 3 | 4 | 5 | current
+    volblocksize     NO      YES   512 to 128k, power of 2
+    volmode         YES      YES   default | full | geom | dev | none
+    volsize         YES       NO   <size>
+    vscan           YES      YES   on | off
+    xattr           YES      YES   on | off | dir | sa
+    zoned           YES      YES   on | off
+    userused@...     NO       NO   <size>
+    groupused@...    NO       NO   <size>
+    projectused@...  NO       NO   <size>
+    userobjused@...  NO       NO   <size>
+    groupobjused@...  NO       NO   <size>
+    projectobjused@...  NO       NO   <size>
+    userquota@...   YES       NO   <size> | none
+    groupquota@...  YES       NO   <size> | none
+    projectquota@... YES       NO   <size> | none
+    userobjquota@... YES       NO   <size> | none
+    groupobjquota@... YES       NO   <size> | none
+    projectobjquota@... YES       NO   <size> | none
+    written@<snap>   NO       NO   <size>
+
+Sizes are specified in bytes with standard units such as K, M, G, etc.
+
+User-defined properties can be specified by using a name containing a colon (:).
+
+The {user|group|project}[obj]{used|quota}@ properties must be appended with
+a user|group|project specifier of one of these forms:
+    POSIX name      (eg: "matt")
+    POSIX id        (eg: "126829")
+    SMB name@domain (eg: "matt@sun")
+    SMB SID         (eg: "S-1-234-567-89")
+[root@zfs ~]# zfs get available otus
+NAME  PROPERTY   VALUE  SOURCE
+otus  available  350M   -
+[root@zfs ~]# zfs get readonly otus
+NAME  PROPERTY  VALUE   SOURCE
+otus  readonly  off     default
+[root@zfs ~]# zfs get recordsize otus
+NAME  PROPERTY    VALUE    SOURCE
+otus  recordsize  128K     local
+[root@zfs ~]# zfs get compression otus
+NAME  PROPERTY     VALUE     SOURCE
+otus  compression  zle       local
+[root@zfs ~]# zfs get checksum otus
+NAME  PROPERTY  VALUE      SOURCE
+otus  checksum  sha256     local
+[root@zfs ~]# exit
+exit
+
+Script done on Thu Nov 30 07:54:12 2023
